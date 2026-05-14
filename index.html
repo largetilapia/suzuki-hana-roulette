@@ -3,19 +3,40 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <!-- Primary Meta Tags -->
+    <title>鈴木羽那ルーレット — Suzuki Hana Roulette</title>
+    <meta name="title" content="鈴木羽那ルーレット — Suzuki Hana Roulette">
+    <meta name="description" content="すずきとはなを揃えて高得点を目指そう！20秒間の爆速パズルルーレット。">
+
+    <!-- Open Graph / Facebook / Discord -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://largetilapia.github.io/suzuki-hana-roulette">
+    <meta property="og:title" content="鈴木羽那ルーレット">
+    <meta property="og:description" content="すずきとはなを揃えて高得点を目指そう！20秒間の爆速パズルルーレット。">
+    <meta property="og:image" content="https://largetilapia.github.io/suzuki-hana-roulette/preview.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://largetilapia.github.io/suzuki-hana-roulette">
+    <meta property="twitter:title" content="鈴木羽那ルーレット">
+    <meta property="twitter:description" content="すずきとはなを揃えて高得点を目指そう！20秒間の爆速パズルルーレット。">
+    <meta property="twitter:image" content="https://largetilapia.github.io/suzuki-hana-roulette/preview.jpg">
+
     <title>鈴木羽那ルーレット</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Mochiy Pop One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kiwi Maru&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Rampart One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cause&display=swap" rel="stylesheet">
 
     <style>
         /* Visual Style: Hand-drawn, arcade aesthetic */
         body {
-            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            font-family: 'Cause', sans-serif;
             background-color: #FFB6C1;
             margin: 0;
             padding: 20px;
@@ -26,7 +47,7 @@
 
         /* When Javascript adds the 'lang-ja' class, use the Japanese font */
         body.lang-ja {
-            font-family: 'Mochiy Pop One', sans-serif;
+            font-family: 'Kiwi Maru', sans-serif;
         }
 
         h1 {
@@ -35,6 +56,15 @@
             padding: 10px 30px;
             border-radius: 10px;
             box-shadow: 4px 4px 0px black;
+
+            /* Clamps font between 24px and 48px, but scales with width in between */
+            font-size: clamp(24px, 6vw, 48px);
+            white-space: nowrap;
+            /* Prevents text from ever breaking into two lines */
+            text-align: center;
+            width: 85%;
+            max-width: 700px;
+            /* Keeps it from hitting the screen edges */
         }
 
         #game-container {
@@ -43,6 +73,58 @@
             /* Removed the fixed width and overflow so it can wrap the new layout */
             display: flex;
             box-shadow: 8px 8px 0px black;
+
+            /* Ensure the transform origin is the top-center so it stays aligned */
+            transform-origin: top center;
+        }
+
+        /* Container to help with scaling */
+        #game-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        @media (max-width: 720px) {
+            #game-container {
+                /* If screen is 350px and game is 700px, this scales it to 0.5 automatically */
+                /* You can also use a fixed scale for simplicity: */
+                transform: scale(0.8);
+                margin-bottom: -60px;
+                /* Adjust for the 'dead space' scale leaves behind */
+            }
+        }
+
+        @media (max-width: 590px) {
+            #game-container {
+                /* If screen is 350px and game is 700px, this scales it to 0.5 automatically */
+                /* You can also use a fixed scale for simplicity: */
+                transform: scale(0.6);
+                margin-bottom: -120px;
+                /* Adjust for the 'dead space' scale leaves behind */
+            }
+        }
+
+        @media (max-width: 460px) {
+            #game-container {
+                /* If screen is 350px and game is 700px, this scales it to 0.5 automatically */
+                /* You can also use a fixed scale for simplicity: */
+                transform: scale(0.5);
+                margin-bottom: -150px;
+                /* Adjust for the 'dead space' scale leaves behind */
+            }
+        }
+
+        @media (max-width: 380px) {
+            #game-container {
+                /* If screen is 350px and game is 700px, this scales it to 0.5 automatically */
+                /* You can also use a fixed scale for simplicity: */
+                transform: scale(0.4);
+                margin-bottom: -180px;
+                /* Adjust for the 'dead space' scale leaves behind */
+            }
         }
 
         /* This takes over the constraints of the old game container */
@@ -136,28 +218,42 @@
 
         #ui-panel {
             margin-top: 20px;
+            padding-bottom: 5px;
             display: flex;
             gap: 20px;
             font-size: 24px;
             font-weight: bold;
+
+            width: 95%;
+            justify-content: space-around;
+            font-size: clamp(16px, 4vw, 24px);
+            max-width: 900px;
         }
 
         .controls {
-            margin-top: 20px;
+            margin-top: 15px;
             display: flex;
-            gap: 15px;
+            gap: 10px;
+            flex-wrap: wrap;
+            /* Allows stacking on very narrow screens */
+            justify-content: center;
+            width: 95%;
         }
 
         button {
             font-family: inherit;
-            font-size: 20px;
+            /* Font scales between 14px and 20px based on screen width */
+            font-size: clamp(14px, 3.5vw, 20px);
             font-weight: bold;
-            padding: 10px 20px;
-            border: 4px solid black;
+            padding: clamp(6px, 2vw, 12px) clamp(10px, 3vw, 24px);
+            border: 3px solid black;
             background-color: #FFFACD;
             cursor: pointer;
             box-shadow: 3px 3px 0px black;
-            transition: transform 0.1s;
+
+            /* Ensures buttons don't take up 100% width on mobile */
+            flex: 0 1 auto;
+            white-space: nowrap;
         }
 
         button:active {
@@ -179,10 +275,12 @@
             font-weight: bold;
             min-height: 35px;
             color: #d32f2f;
+            align-items: center;
+            text-align: center;
         }
 
         #lang-toggle {
-            margin-top: 30px;
+            margin-top: 60px;
             display: flex;
         }
 
@@ -218,27 +316,38 @@
 
         #share-panel {
             display: none;
-            /* Hidden by default */
-            gap: 15px;
+            gap: 10px;
             margin-top: 15px;
             justify-content: center;
+            width: 95%;
         }
 
+        #end-actions-panel {
+            display: none;
+            gap: 10px;
+            margin-top: 15px;
+            justify-content: center;
+            width: 95%;
+        }
+
+        /* Specifically target the share buttons to be slightly more compact */
         #share-panel button {
-            font-size: 16px;
-            /* Slightly smaller than game controls */
-            padding: 8px 16px;
-            border: 3px solid black;
+            font-size: clamp(12px, 3vw, 16px);
+            padding: 6px 12px;
+        }
+
+        #share-panel {
+            flex-wrap: wrap;
         }
 
         #credits {
-            margin-top: 50px;
+            margin-top: 20px;
             margin-bottom: 10px;
             text-align: center;
             font-size: 12px;
             color: #555;
             line-height: 1.8;
-            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            font-family: 'Kiwi Maru', sans-serif;
         }
 
         #credits a {
@@ -280,24 +389,26 @@
         <div><span id="label-score">Score:</span> <span id="score-display">0</span></div>
     </div>
 
-    <div id="game-container">
-        <!-- Left side: The spinning reels -->
-        <div id="roulette-area">
-            <div id="target-line"></div>
+    <div id="game-wrapper">
+        <div id="game-container">
+            <!-- Left side: The spinning reels -->
+            <div id="roulette-area">
+                <div id="target-line"></div>
 
-            <div class="reel-window">
-                <div class="track" id="top-track"></div>
+                <div class="reel-window">
+                    <div class="track" id="top-track"></div>
+                </div>
+
+                <div class="reel-window bottom">
+                    <div class="track" id="bottom-track"></div>
+                </div>
             </div>
 
-            <div class="reel-window bottom">
-                <div class="track" id="bottom-track"></div>
+            <!-- Right side: The vertical labels -->
+            <div id="sidebar">
+                <div class="row-label top-label">すずき</div>
+                <div class="row-label">はな</div>
             </div>
-        </div>
-
-        <!-- Right side: The vertical labels -->
-        <div id="sidebar">
-            <div class="row-label top-label">すずき</div>
-            <div class="row-label">はな</div>
         </div>
     </div>
 
@@ -309,10 +420,14 @@
 
     <div id="message">Press SPIN to start!</div>
 
+
     <!-- NEW: The Share Panel -->
     <div id="share-panel">
         <button id="btn-copy">📋 Copy Score</button>
         <button id="btn-twitter" style="background-color: #e8f5fd;">🐦 Share on Twitter</button>
+    </div>
+    <div id="end-actions-panel">
+        <button id="btn-play-again">✨ PLAY AGAIN</button>
     </div>
 
     <div id="lang-toggle">
@@ -322,8 +437,10 @@
 
     <div id="credits">
         <div id="credit-made-with">Made with ♥ for Suzuki Hana</div>
-        <div><span id="credit-concept">Concept &amp; game design by </span><a href="https://x.com/pokka0801" target="_blank"><b>万手観音</b></a></div>
-        <div><span id="credit-programming">Programming by </span><a href="https://x.com/tilapiarena" target="_blank"><b>Tilapia</b></a></div>
+        <div><span id="credit-concept">Concept &amp; game design by </span><a href="https://x.com/pokka0801"
+                target="_blank"><b>万手観音</b></a></div>
+        <div><span id="credit-programming">Programming by </span><a href="https://x.com/tilapiarena"
+                target="_blank"><b>Tilapia</b></a></div>
         <details>
             <summary id="credit-artwork">Artwork sourced from</summary>
             <ul>
@@ -355,16 +472,16 @@
                 btnStopBottom: 'Stop Hana (Bottom)',
                 btnSpin: 'SPIN!',
                 btnSpinAgain: 'SPIN AGAIN!',
-                btnPlayAgain: 'PLAY AGAIN',
+                btnPlayAgain: '✨ PLAY AGAIN',
                 msgStart: 'Press SPIN to start!',
                 msgSpinning: 'Spinning...',
-                msgTimeUp: (s) => `TIME'S UP! Final Score: ${s}`,
+                msgTimeUp: (s) => `TIME'S UP!\nFinal Score: ${s}`,
                 msgPerfect: 'It\'s 鈴木羽那! +100!',
                 msgFloweringSuzuki: 'Flowering 鈴木! +50!',
                 msgPerson: 'Cosplay? +30!',
                 msgPartial: 'Partial 鈴木羽那... +20!',
                 msgFlowering: 'Flowering...? +20!',
-                msgWeird: 'Weird combo +10!',
+                msgWeird: 'Weird combo +1',
                 scoreCopy: '📋 Copy Score',
                 scoreShareTwitter: '🐦 Share on Twitter',
                 scoreCopied: '✅ Copied!',
@@ -377,20 +494,20 @@
                 h1: '鈴木羽那ルーレット',
                 labelTime: 'タイム:',
                 labelScore: 'スコア:',
-                btnStopTop: '上を止める（すずき）',
-                btnStopBottom: '下を止める（はな）',
+                btnStopTop: 'すずきを止める（上）',
+                btnStopBottom: 'はなを止める（下）',
                 btnSpin: 'スピン！',
                 btnSpinAgain: 'もう一度スピン！',
-                btnPlayAgain: 'もう一度プレイ',
+                btnPlayAgain: '✨ もう一度プレイ',
                 msgStart: 'スピンを押してスタート！',
                 msgSpinning: 'スピン中...',
-                msgTimeUp: (s) => `タイムアップ！最終スコア：${s}`,
+                msgTimeUp: (s) => `タイムアップ！\n最終スコア：${s}`,
                 msgPerfect: '鈴木羽那です！＋100！',
                 msgFloweringSuzuki: '花咲く鈴木！＋50！',
                 msgPerson: 'コスプレ？ +30!',
                 msgPartial: '鈴木羽那の片方...＋20！',
                 msgFlowering: '花が咲く...?＋20！',
-                msgWeird: '変な組み合わせ ＋10！',
+                msgWeird: '変な組み合わせ ＋1',
                 scoreCopy: '📋 スコアをコピー',
                 scoreShareTwitter: '🐦 Twitterでシェア',
                 scoreCopied: '✅ コピー完了！',
@@ -419,6 +536,7 @@
             document.getElementById('btn-spin').innerText = t[spinBtnKey];
             document.getElementById('btn-copy').innerText = t.scoreCopy;
             document.getElementById('btn-twitter').innerText = t.scoreShareTwitter;
+            document.getElementById('btn-play-again').innerText = t.btnPlayAgain;
             document.getElementById('credit-made-with').innerText = t.creditMadeWith;
             document.getElementById('credit-concept').innerText = t.creditConcept;
             document.getElementById('credit-programming').innerText = t.creditProgramming;
@@ -480,14 +598,12 @@
             reel.element.style.width = `${displayItems.length * ITEM_WIDTH}px`;
         }
 
-        shuffleArray(topItems);
-        shuffleArray(bottomItems);
         populateTrack(topReel, topItems);
         populateTrack(bottomReel, bottomItems);
 
         // --- ANIMATION LOOP ---
         function animate() {
-            score_speed_multiplier = Math.sqrt(score) * 0.25;
+            score_speed_multiplier = Math.sqrt(score) * 0.3;
             if (topReel.spinning) {
                 topReel.x -= topReel.speed + score_speed_multiplier;
                 if (Math.abs(topReel.x) >= ITEM_WIDTH * topItems.length) topReel.x = 0;
@@ -551,14 +667,14 @@
             }
 
             msgState = { key: 'msgTimeUp', score };
-            spinBtnKey = 'btnPlayAgain';
             applyLanguage();
 
-            document.getElementById('btn-spin').disabled = false;
+            document.getElementById('btn-spin').disabled = true;
             document.getElementById('btn-stop-top').disabled = true;
             document.getElementById('btn-stop-bottom').disabled = true;
 
             document.getElementById('share-panel').style.display = 'flex';
+            document.getElementById('end-actions-panel').style.display = 'flex';
         }
 
         function checkResult() {
@@ -580,13 +696,13 @@
                 points = 30;
             } else if (topResult === 'girl' || bottomResult === 'dress') {
                 msgState = { key: 'msgPartial' };
-                points = 20;
+                points = 10;
             } else if (bottomResult === 'plant') {
                 msgState = { key: 'msgFlowering' };
-                points = 20;
+                points = 10;
             } else {
                 msgState = { key: 'msgWeird' };
-                points = 10;
+                points = 1;
             }
 
             score += points;
@@ -601,22 +717,12 @@
         }
 
         // --- CONTROLS ---
-        document.getElementById('btn-spin').addEventListener('click', () => {
-            if (timeLeft <= 0) {
-                score = 0;
-                timeLeft = DEFAULT_TIME;
-                spinBtnKey = 'btnSpin';
-                document.getElementById('score-display').innerText = score;
-                document.getElementById('time-display').innerText = timeLeft;
-            }
-
+        function startSpin() {
             document.getElementById('share-panel').style.display = 'none';
+            document.getElementById('end-actions-panel').style.display = 'none';
 
-            // Shuffle the item order
             shuffleArray(topItems);
             shuffleArray(bottomItems);
-
-            // Re-inject the new order into the HTML
             populateTrack(topReel, topItems);
             populateTrack(bottomReel, bottomItems);
 
@@ -627,10 +733,8 @@
 
             topReel.element.style.transition = "none";
             bottomReel.element.style.transition = "none";
-
             topReel.speed = DEFAULT_SPEED + Math.random() * 2;
             bottomReel.speed = DEFAULT_SPEED + Math.random() * 2;
-
             topReel.spinning = true;
             bottomReel.spinning = true;
 
@@ -638,8 +742,24 @@
             applyLanguage();
 
             document.getElementById('btn-spin').disabled = true;
-            document.getElementById('btn-stop-top').disabled = false;
-            document.getElementById('btn-stop-bottom').disabled = false;
+            setTimeout(() => {
+                document.getElementById('btn-stop-top').disabled = false;
+                document.getElementById('btn-stop-bottom').disabled = false;
+            }, 300);
+        }
+
+        document.getElementById('btn-spin').addEventListener('click', () => {
+            startSpin();
+        });
+
+        document.getElementById('btn-play-again').addEventListener('click', () => {
+            score = 0;
+            timeLeft = DEFAULT_TIME;
+            spinBtnKey = 'btnSpin';
+            gameActive = false;
+            document.getElementById('score-display').innerText = score;
+            document.getElementById('time-display').innerText = timeLeft;
+            startSpin();
         });
 
         document.getElementById('btn-stop-top').addEventListener('click', (e) => {
@@ -662,7 +782,7 @@
         applyLanguage();
 
         // --- SHARE FUNCTIONALITY ---
-        const GAME_URL = "https://yourwebsite.com/roulette"; // Placeholder URL
+        const GAME_URL = "https://largetilapia.github.io/suzuki-hana-roulette/";
 
         function getShareText(finalScore) {
             // Feel free to customize the Japanese/English text here!
