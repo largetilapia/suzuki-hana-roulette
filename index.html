@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鈴木羽那ルーレット</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mochiy Pop One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rampart One&display=swap" rel="stylesheet">
+
+    <style>
+        /* Visual Style: Hand-drawn, arcade aesthetic */
+        body {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            background-color: #FFB6C1;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* When Javascript adds the 'lang-ja' class, use the Japanese font */
+        body.lang-ja {
+            font-family: 'Mochiy Pop One', sans-serif;
+        }
+
+        h1 {
+            background: white;
+            border: 4px solid black;
+            padding: 10px 30px;
+            border-radius: 10px;
+            box-shadow: 4px 4px 0px black;
+        }
+
+        #game-container {
+            background-color: white;
+            border: 6px solid black;
+            /* Removed the fixed width and overflow so it can wrap the new layout */
+            display: flex;
+            box-shadow: 8px 8px 0px black;
+        }
+
+        /* This takes over the constraints of the old game container */
+        #roulette-area {
+            width: 600px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* The new yellow sidebar */
+        #sidebar {
+            width: 60px;
+            background-color: #FFFACD;
+            /* Lemon Chiffon from your mockup */
+            border-left: 6px solid black;
+            display: flex;
+            flex-direction: column;
+            font-family: 'Rampart One';
+        }
+
+        /* The vertical text styling */
+        .row-label {
+            height: 150px;
+            /* Exactly matches the height of the .reel-window */
+            display: flex;
+            align-items: center;
+            /* Centers text horizontally within the vertical column */
+            justify-content: center;
+            /* Centers text vertically within the column */
+
+            /* The magic CSS for vertical Japanese text */
+            writing-mode: vertical-rl;
+
+            font-size: 32px;
+            font-weight: bold;
+            letter-spacing: 5px;
+            /* Adds a little breathing room between characters */
+        }
+
+        /* Add the border between the two labels */
+        .row-label.top-label {
+            border-bottom: 4px solid black;
+        }
+
+        /* The Red Target Line */
+        #target-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: red;
+            z-index: 10;
+            transform: translateX(-50%);
+        }
+
+        .reel-window {
+            height: 150px;
+            border-bottom: 4px solid black;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+
+        .reel-window.bottom {
+            border-bottom: none;
+        }
+
+        .track {
+            display: flex;
+            position: absolute;
+            left: 0;
+        }
+
+        .item {
+            width: 150px;
+            height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .item img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        #ui-panel {
+            margin-top: 20px;
+            display: flex;
+            gap: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+        }
+
+        button {
+            font-family: inherit;
+            font-size: 20px;
+            font-weight: bold;
+            padding: 10px 20px;
+            border: 4px solid black;
+            background-color: #FFFACD;
+            cursor: pointer;
+            box-shadow: 3px 3px 0px black;
+            transition: transform 0.1s;
+        }
+
+        button:active {
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0px black;
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            color: #666;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        #message {
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            min-height: 35px;
+            color: #d32f2f;
+        }
+
+        #lang-toggle {
+            margin-top: 30px;
+            display: flex;
+        }
+
+        .lang-btn {
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: bold;
+            padding: 4px 12px;
+            border: 2px solid black;
+            background-color: #FFFACD;
+            cursor: pointer;
+            box-shadow: 2px 2px 0px black;
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+
+        .lang-btn:first-child {
+            border-right: 1px solid black;
+        }
+
+        .lang-btn:last-child {
+            border-left: 1px solid black;
+        }
+
+        .lang-btn.active {
+            background-color: #FFB6C1;
+            box-shadow: none;
+            transform: translate(1px, 1px);
+        }
+
+        .lang-btn:not(.active):hover {
+            background-color: #ffe9a0;
+        }
+
+        #share-panel {
+            display: none;
+            /* Hidden by default */
+            gap: 15px;
+            margin-top: 15px;
+            justify-content: center;
+        }
+
+        #share-panel button {
+            font-size: 16px;
+            /* Slightly smaller than game controls */
+            padding: 8px 16px;
+            border: 3px solid black;
+        }
+
+        #credits {
+            margin-top: 50px;
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 12px;
+            color: #555;
+            line-height: 1.8;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+        }
+
+        #credits a {
+            color: #555;
+            text-decoration: underline;
+        }
+
+        #credits details {
+            display: block;
+        }
+
+        #credits summary {
+            cursor: pointer;
+            list-style: revert;
+            display: list-item;
+        }
+
+        #credits summary::-webkit-details-marker {
+            color: #555;
+        }
+
+        #credits details ul {
+            display: inline-block;
+            text-align: left;
+            margin: 4px 0 0 0;
+            padding-left: 16px;
+            line-height: 2;
+            font-size: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1 id="h1-title">鈴木羽那ルーレット</h1>
+
+    <div id="ui-panel">
+        <div><span id="label-time">Time:</span> <span id="time-display">10</span>s</div>
+        <div><span id="label-score">Score:</span> <span id="score-display">0</span></div>
+    </div>
+
+    <div id="game-container">
+        <!-- Left side: The spinning reels -->
+        <div id="roulette-area">
+            <div id="target-line"></div>
+
+            <div class="reel-window">
+                <div class="track" id="top-track"></div>
+            </div>
+
+            <div class="reel-window bottom">
+                <div class="track" id="bottom-track"></div>
+            </div>
+        </div>
+
+        <!-- Right side: The vertical labels -->
+        <div id="sidebar">
+            <div class="row-label top-label">すずき</div>
+            <div class="row-label">はな</div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button id="btn-stop-top" disabled>Stop Suzuki (Top)</button>
+        <button id="btn-stop-bottom" disabled>Stop Hana (Bottom)</button>
+        <button id="btn-spin">SPIN!</button>
+    </div>
+
+    <div id="message">Press SPIN to start!</div>
+
+    <!-- NEW: The Share Panel -->
+    <div id="share-panel">
+        <button id="btn-copy">📋 Copy Score</button>
+        <button id="btn-twitter" style="background-color: #e8f5fd;">🐦 Share on Twitter</button>
+    </div>
+
+    <div id="lang-toggle">
+        <button class="lang-btn" id="btn-lang-en">ENGLISH</button>
+        <button class="lang-btn" id="btn-lang-ja">日本語</button>
+    </div>
+
+    <div id="credits">
+        <div id="credit-made-with">Made with ♥ for Suzuki Hana</div>
+        <div><span id="credit-concept">Concept &amp; game design by </span><a href="https://x.com/pokka0801" target="_blank"><b>万手観音</b></a></div>
+        <div><span id="credit-programming">Programming by </span><a href="https://x.com/tilapiarena" target="_blank"><b>Tilapia</b></a></div>
+        <details>
+            <summary id="credit-artwork">Artwork sourced from</summary>
+            <ul>
+                <li><a href="https://project-imas.wiki/Hana_Suzuki" target="_blank">iM@S Wiki</a></li>
+                <li><a href="https://www.detectiveconanworld.com/wiki/Sonoko_Suzuki" target="_blank">Detective Conan
+                        World</a></li>
+                <li><a href="https://zh.wikipedia.org/zh-tw/%E5%A4%A7%E5%8F%A3%E9%BB%91%E9%B1%B8" target="_blank">Fish
+                        (鈴木 → 鱸)</a></li>
+                <li><a href="https://www.suzuki.co.jp/car/carry_customized/" target="_blank">スズキ</a></li>
+                <li><a href="https://www.freevector.com/free-cartoon-tree-vector-19274" target="_blank">Bell tree
+                        (鈴木)</a></li>
+                <li><a href="https://www.vecteezy.com/vector-art/9361806-human-nose-flat-clip-art-illustration-isolated-icon"
+                        target="_blank">Nose (鼻 → 羽那)</a></li>
+                <li><a href="https://www.istockphoto.com/vector/home-flower-in-pot-vector-design-illustration-isolated-on-white-background-gm1154066666-313662878"
+                        target="_blank">Flower pot</a></li>
+                <li><a href="https://en.wikipedia.org/wiki/Hanafuda" target="_blank">Hanafuda (花札 → 羽那)</a></li>
+            </ul>
+        </details>
+    </div>
+
+    <script>
+        // --- TRANSLATIONS ---
+        const translations = {
+            en: {
+                h1: 'Suzuki Hana Roulette',
+                labelTime: 'Time:',
+                labelScore: 'Score:',
+                btnStopTop: 'Stop Suzuki (Top)',
+                btnStopBottom: 'Stop Hana (Bottom)',
+                btnSpin: 'SPIN!',
+                btnSpinAgain: 'SPIN AGAIN!',
+                btnPlayAgain: 'PLAY AGAIN',
+                msgStart: 'Press SPIN to start!',
+                msgSpinning: 'Spinning...',
+                msgTimeUp: (s) => `TIME'S UP! Final Score: ${s}`,
+                msgPerfect: 'It\'s 鈴木羽那! +100!',
+                msgFloweringSuzuki: 'Flowering 鈴木! +50!',
+                msgPerson: 'Cosplay? +30!',
+                msgPartial: 'Partial 鈴木羽那... +20!',
+                msgFlowering: 'Flowering...? +20!',
+                msgWeird: 'Weird combo +10!',
+                scoreCopy: '📋 Copy Score',
+                scoreShareTwitter: '🐦 Share on Twitter',
+                scoreCopied: '✅ Copied!',
+                creditMadeWith: 'Made with ♥ for Suzuki Hana',
+                creditConcept: 'Concept & game design by ',
+                creditProgramming: 'Programming by ',
+                creditArtwork: 'Artwork sourced from',
+            },
+            ja: {
+                h1: '鈴木羽那ルーレット',
+                labelTime: 'タイム:',
+                labelScore: 'スコア:',
+                btnStopTop: '上を止める（すずき）',
+                btnStopBottom: '下を止める（はな）',
+                btnSpin: 'スピン！',
+                btnSpinAgain: 'もう一度スピン！',
+                btnPlayAgain: 'もう一度プレイ',
+                msgStart: 'スピンを押してスタート！',
+                msgSpinning: 'スピン中...',
+                msgTimeUp: (s) => `タイムアップ！最終スコア：${s}`,
+                msgPerfect: '鈴木羽那です！＋100！',
+                msgFloweringSuzuki: '花咲く鈴木！＋50！',
+                msgPerson: 'コスプレ？ +30!',
+                msgPartial: '鈴木羽那の片方...＋20！',
+                msgFlowering: '花が咲く...?＋20！',
+                msgWeird: '変な組み合わせ ＋10！',
+                scoreCopy: '📋 スコアをコピー',
+                scoreShareTwitter: '🐦 Twitterでシェア',
+                scoreCopied: '✅ コピー完了！',
+                creditMadeWith: '鈴木羽那のために ♥ を込めて',
+                creditConcept: 'コンセプト＆ゲームデザイン：',
+                creditProgramming: 'プログラミング：',
+                creditArtwork: 'アートの出典',
+            }
+        };
+
+        // Infer default language from browser locale
+        const browserLang = (navigator.language || 'en').toLowerCase();
+        let currentLang = browserLang.startsWith('ja') ? 'ja' : 'en';
+
+        // Tracks which text belongs on the spin button and in the message area
+        let spinBtnKey = 'btnSpin';
+        let msgState = { key: 'msgStart', score: 0 };
+
+        function applyLanguage() {
+            const t = translations[currentLang];
+            document.getElementById('h1-title').innerText = t.h1;
+            document.getElementById('label-time').innerText = t.labelTime;
+            document.getElementById('label-score').innerText = t.labelScore;
+            document.getElementById('btn-stop-top').innerText = t.btnStopTop;
+            document.getElementById('btn-stop-bottom').innerText = t.btnStopBottom;
+            document.getElementById('btn-spin').innerText = t[spinBtnKey];
+            document.getElementById('btn-copy').innerText = t.scoreCopy;
+            document.getElementById('btn-twitter').innerText = t.scoreShareTwitter;
+            document.getElementById('credit-made-with').innerText = t.creditMadeWith;
+            document.getElementById('credit-concept').innerText = t.creditConcept;
+            document.getElementById('credit-programming').innerText = t.creditProgramming;
+            document.getElementById('credit-artwork').innerText = t.creditArtwork;
+
+            const msg = msgState.key === 'msgTimeUp'
+                ? t.msgTimeUp(msgState.score)
+                : t[msgState.key];
+            document.getElementById('message').innerText = msg;
+
+            document.getElementById('btn-lang-en').classList.toggle('active', currentLang === 'en');
+            document.getElementById('btn-lang-ja').classList.toggle('active', currentLang === 'ja');
+
+            if (currentLang === 'ja') {
+                document.body.classList.add('lang-ja');
+            } else {
+                document.body.classList.remove('lang-ja');
+            }
+        }
+
+        document.getElementById('btn-lang-en').addEventListener('click', () => { currentLang = 'en'; applyLanguage(); });
+        document.getElementById('btn-lang-ja').addEventListener('click', () => { currentLang = 'ja'; applyLanguage(); });
+
+        // --- GAME DATA ---
+        const topItems = [
+            { id: 'fish', image: 'icons/fish-1.jpg' },
+            { id: 'girl', image: 'icons/suzuki-hana-head.jpg' },
+            { id: 'truck', image: 'icons/suzuki-truck.jpg' },
+            { id: 'belltree', image: 'icons/bell-tree.jpg' },
+            { id: 'sonoko', image: 'icons/suzuki-sonoko.jpg' }
+        ];
+
+        const bottomItems = [
+            { id: 'nose', image: 'icons/nose.jpg' },
+            { id: 'plant', image: 'icons/flower-pot-vector.jpg' },
+            { id: 'dress', image: 'icons/suzuki-hana-body.jpg' },
+            { id: 'hanafuda', image: 'icons/hanafuda.jpg' }
+        ];
+
+        const DEFAULT_SPEED = 4.0;
+        const ITEM_WIDTH = 150;
+        const DEFAULT_TIME = 20;
+
+        let score = 0;
+        let timeLeft = DEFAULT_TIME;
+        let gameActive = false;
+        let timerInterval;
+        document.getElementById('time-display').innerText = timeLeft;
+
+        // Reel State
+        const topReel = { element: document.getElementById('top-track'), x: 0, speed: DEFAULT_SPEED, spinning: false, items: [] };
+        const bottomReel = { element: document.getElementById('bottom-track'), x: -450, speed: DEFAULT_SPEED, spinning: false, items: [] };
+
+        // --- SETUP ---
+        function populateTrack(reel, itemData) {
+            const displayItems = [...itemData, ...itemData, ...itemData, ...itemData];
+            reel.items = displayItems;
+            reel.element.innerHTML = displayItems.map(item => `<div class="item" data-id="${item.id}"><img src="${item.image}" alt="${item.id}"></div>`).join('');
+            reel.element.style.width = `${displayItems.length * ITEM_WIDTH}px`;
+        }
+
+        shuffleArray(topItems);
+        shuffleArray(bottomItems);
+        populateTrack(topReel, topItems);
+        populateTrack(bottomReel, bottomItems);
+
+        // --- ANIMATION LOOP ---
+        function animate() {
+            score_speed_multiplier = Math.sqrt(score) * 0.25;
+            if (topReel.spinning) {
+                topReel.x -= topReel.speed + score_speed_multiplier;
+                if (Math.abs(topReel.x) >= ITEM_WIDTH * topItems.length) topReel.x = 0;
+                topReel.element.style.transform = `translateX(${topReel.x}px)`;
+            }
+
+            if (bottomReel.spinning) {
+                bottomReel.x += bottomReel.speed + score_speed_multiplier;
+                if (bottomReel.x >= 0) {
+                    bottomReel.x = -(ITEM_WIDTH * bottomItems.length);
+                }
+                bottomReel.element.style.transform = `translateX(${bottomReel.x}px)`;
+            }
+
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // --- SNAP & ALIGNMENT LOGIC ---
+        function snapReelToCenter(reel) {
+            const containerCenter = 300;
+            const absoluteX = Math.abs(reel.x);
+
+            const exactIndex = (absoluteX + containerCenter - (ITEM_WIDTH / 2)) / ITEM_WIDTH;
+            const targetIndex = Math.round(exactIndex);
+            const targetX = -((targetIndex * ITEM_WIDTH) - containerCenter + (ITEM_WIDTH / 2));
+
+            reel.x = targetX;
+            reel.element.style.transition = "transform 0.15s cubic-bezier(0.2, 0.8, 0.2, 1)";
+            reel.element.style.transform = `translateX(${reel.x}px)`;
+
+            const dataArray = reel === topReel ? topItems : bottomItems;
+            return dataArray[targetIndex % dataArray.length].id;
+        }
+
+        // --- GAME LOGIC ---
+        function startGameTimer() {
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                document.getElementById('time-display').innerText = timeLeft;
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                    endGame();
+                }
+            }, 1000);
+        }
+
+        function endGame() {
+            gameActive = false;
+
+            if (topReel.spinning) {
+                topReel.spinning = false;
+                snapReelToCenter(topReel);
+            }
+            if (bottomReel.spinning) {
+                bottomReel.spinning = false;
+                snapReelToCenter(bottomReel);
+            }
+
+            msgState = { key: 'msgTimeUp', score };
+            spinBtnKey = 'btnPlayAgain';
+            applyLanguage();
+
+            document.getElementById('btn-spin').disabled = false;
+            document.getElementById('btn-stop-top').disabled = true;
+            document.getElementById('btn-stop-bottom').disabled = true;
+
+            document.getElementById('share-panel').style.display = 'flex';
+        }
+
+        function checkResult() {
+            if (topReel.spinning || bottomReel.spinning) return;
+
+            const topResult = snapReelToCenter(topReel);
+            const bottomResult = snapReelToCenter(bottomReel);
+
+            let points = 0;
+
+            if (topResult === 'girl' && bottomResult === 'dress') {
+                msgState = { key: 'msgPerfect' };
+                points = 100;
+            } else if (topResult === 'girl' && bottomResult === 'plant') {
+                msgState = { key: 'msgFloweringSuzuki' };
+                points = 50;
+            } else if (topResult === 'sonoko' && bottomResult === 'dress') {
+                msgState = { key: 'msgPerson' };
+                points = 30;
+            } else if (topResult === 'girl' || bottomResult === 'dress') {
+                msgState = { key: 'msgPartial' };
+                points = 20;
+            } else if (bottomResult === 'plant') {
+                msgState = { key: 'msgFlowering' };
+                points = 20;
+            } else {
+                msgState = { key: 'msgWeird' };
+                points = 10;
+            }
+
+            score += points;
+            document.getElementById('score-display').innerText = score;
+
+            if (timeLeft > 0) {
+                spinBtnKey = 'btnSpinAgain';
+                document.getElementById('btn-spin').disabled = false;
+            }
+
+            applyLanguage();
+        }
+
+        // --- CONTROLS ---
+        document.getElementById('btn-spin').addEventListener('click', () => {
+            if (timeLeft <= 0) {
+                score = 0;
+                timeLeft = DEFAULT_TIME;
+                spinBtnKey = 'btnSpin';
+                document.getElementById('score-display').innerText = score;
+                document.getElementById('time-display').innerText = timeLeft;
+            }
+
+            document.getElementById('share-panel').style.display = 'none';
+
+            // Shuffle the item order
+            shuffleArray(topItems);
+            shuffleArray(bottomItems);
+
+            // Re-inject the new order into the HTML
+            populateTrack(topReel, topItems);
+            populateTrack(bottomReel, bottomItems);
+
+            if (!gameActive) {
+                gameActive = true;
+                startGameTimer();
+            }
+
+            topReel.element.style.transition = "none";
+            bottomReel.element.style.transition = "none";
+
+            topReel.speed = DEFAULT_SPEED + Math.random() * 2;
+            bottomReel.speed = DEFAULT_SPEED + Math.random() * 2;
+
+            topReel.spinning = true;
+            bottomReel.spinning = true;
+
+            msgState = { key: 'msgSpinning' };
+            applyLanguage();
+
+            document.getElementById('btn-spin').disabled = true;
+            document.getElementById('btn-stop-top').disabled = false;
+            document.getElementById('btn-stop-bottom').disabled = false;
+        });
+
+        document.getElementById('btn-stop-top').addEventListener('click', (e) => {
+            topReel.spinning = false;
+            e.target.disabled = true;
+            bottomReel.speed = (bottomReel.speed) * 1.2 + Math.random() * 3;
+            snapReelToCenter(topReel);
+            checkResult();
+        });
+
+        document.getElementById('btn-stop-bottom').addEventListener('click', (e) => {
+            bottomReel.spinning = false;
+            e.target.disabled = true;
+            topReel.speed = (topReel.speed) * 1.2 + Math.random() * 3;
+            snapReelToCenter(bottomReel);
+            checkResult();
+        });
+
+        // Apply language on load
+        applyLanguage();
+
+        // --- SHARE FUNCTIONALITY ---
+        const GAME_URL = "https://yourwebsite.com/roulette"; // Placeholder URL
+
+        function getShareText(finalScore) {
+            // Feel free to customize the Japanese/English text here!
+            if (currentLang === 'ja') {
+                return `「鈴木羽那ルーレット」で ${finalScore} 点を獲得したよ！🎰✨\n\n#鈴木羽那ルーレット\n遊んでみる 👉 ${GAME_URL}`;
+            }
+            else {
+                return `I scored ${finalScore} points in Suzuki Hana Roulette! 🎰✨\n\n#鈴木羽那ルーレット\nPlay here: ${GAME_URL}`;
+            }
+        }
+
+        document.getElementById('btn-copy').addEventListener('click', () => {
+            const text = getShareText(score);
+            navigator.clipboard.writeText(text).then(() => {
+                // Temporarily change the button text to show success
+                const btn = document.getElementById('btn-copy');
+                const originalText = btn.innerText;
+                btn.innerText = translations[currentLang].scoreCopied;
+                setTimeout(() => { btn.innerText = originalText; }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+                alert("Failed to copy to clipboard.");
+            });
+        });
+
+        document.getElementById('btn-twitter').addEventListener('click', () => {
+            const text = getShareText(score);
+            // encodeURIComponent ensures spaces, hashtags, and line breaks are formatted correctly for a URL
+            const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+            window.open(twitterUrl, '_blank');
+        });
+
+        // --- UTILS ---
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+    </script>
+</body>
+
+</html>
