@@ -311,6 +311,45 @@
             box-shadow: 1px 1px 0px black;
         }
 
+        #speed-toggle {
+            display: flex;
+            margin-top: 10px;
+        }
+
+        .speed-btn {
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: bold;
+            padding: 4px 12px;
+            border: 2px solid black;
+            background-color: #FFFACD;
+            cursor: pointer;
+            box-shadow: 2px 2px 0px black;
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+
+        .speed-btn:first-child {
+            border-right: 1px solid black;
+        }
+
+        .speed-btn:last-child {
+            border-left: 1px solid black;
+        }
+
+        .speed-btn.active {
+            background-color: #FFB6C1;
+            box-shadow: none;
+            transform: translate(1px, 1px);
+        }
+
+        .speed-btn.active.turbo {
+            background-color: rgb(248, 181, 255);
+        }
+
+        .speed-btn:not(.active):not(:disabled):hover {
+            background-color: #ffe9a0;
+        }
+
         .lang-btn {
             font-family: inherit;
             font-size: 13px;
@@ -521,6 +560,10 @@
         </div>
         <button id="btn-info">❓</button>
     </div>
+    <div id="speed-toggle">
+        <button class="speed-btn" id="btn-speed-normal">NORMAL</button>
+        <button class="speed-btn turbo" id="btn-speed-high">⚡ TURBO</button>
+    </div>
 
     <div id="credits">
         <div id="credit-made-with">Made with ♥ for Suzuki Hana</div>
@@ -578,23 +621,23 @@
                 msgStart: 'Press SPIN to start!',
                 msgSpinning: 'Spinning...',
                 msgTimeUp: (s) => `TIME'S UP!\nFinal Score: ${s}`,
-                msgPerfectCasual: 'It\'s Suzuki Hana! +100!',
-                msgPerfectLive: 'It\'s Suzuki hana (CoMETIK ver)! +100!',
-                msgAlmostPerfect: 'It\'s wrong outfit Suzuki Hana! +90!',
-                msgSuzukiHanaOshi: 'You must really like Suzuki Hana! +80!',
-                msgExpensiveFlower: 'That\'s one expensive flower! +70!',
-                msgSonokoHanaFan: 'Suzuki Sonoko is a fan of Suzuki Hana?! +60!',
-                msgHanaKotoneFan: 'Suzuki Hana is a fan of Fujita Kotone! +60!',
-                msgTechnicallyCorrect: 'Technically all of these are Suzuki Hana... +50!',
-                msgFloweringSuzuki: 'Flowering Suzuki (Hana)! +40!',
-                msgHardworkingKotone: 'Hardworking Kotonui! +40!',
-                msgCosplay: 'Cosplay? +30!',
-                msgKoiKoi: 'This isn\'t Koi-Koi! +30!',
-                msgFishSmell: 'Smells fishy... +20!',
-                msgTreeTree: 'DoubleTree (by Hana) +20!',
-                msgPartial: 'Partial Suzuki Hana... +10!',
-                msgFlowering: 'Flowering...? +10!',
-                msgWeird: 'Weird combo +1',
+                msgPerfectCasual: (p) => `It's Suzuki Hana! +${p}!`,
+                msgPerfectLive: (p) => `It's Suzuki Hana (CoMETIK ver)! +${p}!`,
+                msgAlmostPerfect: (p) => `It's wrong outfit Suzuki Hana! +${p}!`,
+                msgSuzukiHanaOshi: (p) => `You must really like Suzuki Hana! +${p}!`,
+                msgExpensiveFlower: (p) => `That's one expensive flower! +${p}!`,
+                msgSonokoHanaFan: (p) => `Suzuki Sonoko is a fan of Suzuki Hana?! +${p}!`,
+                msgHanaKotoneFan: (p) => `Suzuki Hana is a fan of Fujita Kotone! +${p}!`,
+                msgTechnicallyCorrect: (p) => `Technically all of these are Suzuki Hana... +${p}!`,
+                msgFloweringSuzuki: (p) => `Flowering Suzuki (Hana)! +${p}!`,
+                msgHardworkingKotone: (p) => `Hardworking Kotonui! +${p}!`,
+                msgCosplay: (p) => `Cosplay? +${p}!`,
+                msgKoiKoi: (p) => `This isn't Koi-Koi! +${p}!`,
+                msgFishSmell: (p) => `Smells fishy... +${p}!`,
+                msgTreeTree: (p) => `DoubleTree (by Hana) +${p}!`,
+                msgPartial: (p) => `Partial Suzuki Hana... +${p}!`,
+                msgFlowering: (p) => `Flowering...? +${p}!`,
+                msgWeird: (p) => `Weird combo +${p}`,
                 scoreCopy: '📋 Copy Score',
                 scoreShareTwitter: '🐦 Share on Twitter',
                 scoreCopied: '✅ Copied!',
@@ -603,8 +646,10 @@
                 creditProgramming: 'Programming by ',
                 creditArtwork: 'Artwork sourced from',
                 infoTitle: 'How to Play',
-                infoBody: 'Match as many Suzuki Hanas as you can within the time limit!\n\nDifferent combinations give different results — so try to find them all!\n\nPress SPIN to start the reels, then stop each one independently to aim for the best combo.',
+                infoBody: 'Match as many Suzuki Hanas as you can within the time limit!\n\nDifferent combinations give different results — so try to find them all!\n\nPress SPIN to start the reels, then stop each one independently to aim for the best combo.\n\n⚡ Turbo mode spins faster, but all score gains are ×1.5!',
                 infoClose: '✕ Close',
+                btnSpeedNormal: 'NORMAL',
+                btnSpeedHigh: '⚡TURBO',
             },
             ja: {
                 h1: '鈴木羽那ルーレット',
@@ -618,23 +663,23 @@
                 msgStart: 'スピンを押してスタート！',
                 msgSpinning: 'スピン中...',
                 msgTimeUp: (s) => `タイムアップ！\n最終スコア：${s}`,
-                msgPerfectCasual: '鈴木羽那です！＋100！',
-                msgPerfectLive: '鈴木羽那（CoMETIK ver）です！＋100！',
-                msgAlmostPerfect: '衣装違い鈴木羽那です！＋90！',
-                msgSuzukiHanaOshi: '鈴木羽那推しですね！＋80！',
-                msgExpensiveFlower: '高い花ですね！＋70！',
-                msgSonokoHanaFan: '鈴木園子は鈴木羽那推し？！＋60！',
-                msgHanaKotoneFan: '鈴木羽那は藤田ことね推し！＋60！',
-                msgTechnicallyCorrect: '確かに両方とも鈴木羽那ですけど... ＋50！',
-                msgFloweringSuzuki: '花咲く鈴木！＋40！',
-                msgHardworkingKotone: 'ことぬい働くぞ！＋40！',
-                msgCosplay: 'コスプレ？ +30!',
-                msgKoiKoi: 'こいこいじゃない！＋30！',
-                msgFishSmell: '魚のにおい...＋20！',
-                msgTreeTree: 'だぶるはじゃなくて、だぶるき？ ＋20！',
-                msgPartial: '片方だけ鈴木羽那...＋10！',
-                msgFlowering: '花が咲く...?＋10！',
-                msgWeird: '変な組み合わせ ＋1',
+                msgPerfectCasual: (p) => `鈴木羽那です！＋${p}！`,
+                msgPerfectLive: (p) => `鈴木羽那（CoMETIK ver）です！＋${p}！`,
+                msgAlmostPerfect: (p) => `衣装違い鈴木羽那です！＋${p}！`,
+                msgSuzukiHanaOshi: (p) => `鈴木羽那推しですね！＋${p}！`,
+                msgExpensiveFlower: (p) => `高い花ですね！＋${p}！`,
+                msgSonokoHanaFan: (p) => `鈴木園子は鈴木羽那推し？！＋${p}！`,
+                msgHanaKotoneFan: (p) => `鈴木羽那は藤田ことね推し！＋${p}！`,
+                msgTechnicallyCorrect: (p) => `確かに両方とも鈴木羽那ですけど... ＋${p}！`,
+                msgFloweringSuzuki: (p) => `花咲く鈴木！＋${p}！`,
+                msgHardworkingKotone: (p) => `ことぬい働くぞ！＋${p}！`,
+                msgCosplay: (p) => `コスプレ？ +${p}!`,
+                msgKoiKoi: (p) => `こいこいじゃない！＋${p}！`,
+                msgFishSmell: (p) => `魚のにおい...＋${p}！`,
+                msgTreeTree: (p) => `だぶるはじゃなくて、だぶるき？ ＋${p}！`,
+                msgPartial: (p) => `片方だけ鈴木羽那...＋${p}！`,
+                msgFlowering: (p) => `花が咲く...?＋${p}！`,
+                msgWeird: (p) => `変な組み合わせ ＋${p}`,
                 scoreCopy: '📋 スコアをコピー',
                 scoreShareTwitter: '🐦 Twitterでシェア',
                 scoreCopied: '✅ コピー完了！',
@@ -643,8 +688,10 @@
                 creditProgramming: 'プログラミング：',
                 creditArtwork: 'アートの出典',
                 infoTitle: '遊び方',
-                infoBody: '制限時間内にできるだけ多くの鈴木羽那を揃えよう！\n\n上下の組み合わせによって結果とスコアが変わるので、全部見つけてみよう！\n\nスピンを押してスタート。リールを一つずつ止めて、ベストコンボを狙おう！',
+                infoBody: '制限時間内にできるだけ多くの鈴木羽那を揃えよう！\n\n上下の組み合わせによって結果とスコアが変わるので、全部見つけてみよう！\n\nスピンを押してスタート。リールを一つずつ止めて、ベストコンボを狙おう！\n\n⚡ 超高速モードはリールが速くなるけど、スコアが×1.5になるよ！',
                 infoClose: '✕ 閉じる',
+                btnSpeedNormal: 'ノーマル',
+                btnSpeedHigh: '⚡超高速',
             }
         };
 
@@ -672,14 +719,20 @@
             document.getElementById('credit-programming').innerText = t.creditProgramming;
             document.getElementById('credit-artwork').innerText = t.creditArtwork;
 
-            const msg = msgState.key === 'msgTimeUp'
-                ? t.msgTimeUp(msgState.score)
-                : t[msgState.key];
+            const msgVal = t[msgState.key];
+            const msg = typeof msgVal === 'function'
+                ? msgVal(msgState.key === 'msgTimeUp' ? msgState.score : msgState.points)
+                : msgVal;
             document.getElementById('message').innerText = msg;
 
             document.getElementById('info-modal-title').innerText = t.infoTitle;
             document.getElementById('info-modal-body').innerText = t.infoBody;
             document.getElementById('btn-info-close').innerText = t.infoClose;
+
+            document.getElementById('btn-speed-normal').innerText = t.btnSpeedNormal;
+            document.getElementById('btn-speed-high').innerText = t.btnSpeedHigh;
+            document.getElementById('btn-speed-normal').classList.toggle('active', !highSpeedMode);
+            document.getElementById('btn-speed-high').classList.toggle('active', highSpeedMode);
 
             document.getElementById('btn-lang-en').classList.toggle('active', currentLang === 'en');
             document.getElementById('btn-lang-ja').classList.toggle('active', currentLang === 'ja');
@@ -693,6 +746,9 @@
 
         document.getElementById('btn-lang-en').addEventListener('click', () => { currentLang = 'en'; applyLanguage(); });
         document.getElementById('btn-lang-ja').addEventListener('click', () => { currentLang = 'ja'; applyLanguage(); });
+
+        document.getElementById('btn-speed-normal').addEventListener('click', () => { highSpeedMode = false; applyLanguage(); });
+        document.getElementById('btn-speed-high').addEventListener('click', () => { highSpeedMode = true; applyLanguage(); });
 
         document.getElementById('btn-info').addEventListener('click', () => {
             document.getElementById('info-modal').style.display = 'flex';
@@ -727,12 +783,15 @@
         ];
 
         const DEFAULT_SPEED = 3.0;
+        const TURBO_SPEED = 6.0;
         const ITEM_WIDTH = 150;
         const DEFAULT_TIME = 30;
 
         let score = 0;
         let timeLeft = DEFAULT_TIME;
         let gameActive = false;
+        let highSpeedMode = false;
+        let playedHighSpeed = false;
         let timerInterval;
         let lastTime = performance.now();
         document.getElementById('time-display').innerText = timeLeft;
@@ -761,7 +820,7 @@
             lastTime = currentTime;
             const deltaTimeMultiplier = deltaTime / 8.33; // Normalize to ~120fps
 
-            score_speed_multiplier = Math.sqrt(score) * 0.1;
+            score_speed_multiplier = Math.sqrt(score) * (highSpeedMode ? 0.2 : 0.1);
             if (topReel.spinning) {
                 topReel.x -= (topReel.speed + score_speed_multiplier) * deltaTimeMultiplier;
                 if (Math.abs(topReel.x) >= ITEM_WIDTH * topItems.length) topReel.x = 0;
@@ -833,6 +892,9 @@
 
             document.getElementById('share-panel').style.display = 'flex';
             document.getElementById('end-actions-panel').style.display = 'flex';
+
+            document.getElementById('btn-speed-normal').disabled = false;
+            document.getElementById('btn-speed-high').disabled = false;
         }
 
         function checkResult() {
@@ -896,6 +958,8 @@
                 points = 1;
             }
 
+            if (highSpeedMode) points = Math.round(points * 1.5);
+            msgState.points = points;
             score += points;
             document.getElementById('score-display').innerText = score;
 
@@ -919,13 +983,18 @@
 
             if (!gameActive) {
                 gameActive = true;
+                playedHighSpeed = highSpeedMode;
                 startGameTimer();
             }
 
             topReel.element.style.transition = "none";
             bottomReel.element.style.transition = "none";
-            topReel.speed = DEFAULT_SPEED + Math.random() * 2;
-            bottomReel.speed = DEFAULT_SPEED + Math.random() * 2;
+            const baseSpeed = highSpeedMode ? TURBO_SPEED : DEFAULT_SPEED;
+            topReel.speed = baseSpeed + Math.random() * 2;
+            bottomReel.speed = baseSpeed + Math.random() * 2;
+
+            document.getElementById('btn-speed-normal').disabled = true;
+            document.getElementById('btn-speed-high').disabled = true;
             topReel.spinning = true;
             bottomReel.spinning = true;
 
@@ -976,12 +1045,12 @@
         const GAME_URL = "https://largetilapia.github.io/suzuki-hana-roulette-match/";
 
         function getShareText(finalScore) {
-            // Feel free to customize the Japanese/English text here!
             if (currentLang === 'ja') {
-                return `「鈴木羽那ルーレット」で ${finalScore} 点を獲得したよ！🎰✨\n\n#鈴木羽那ルーレット\n遊んでみる 👉 ${GAME_URL}`;
-            }
-            else {
-                return `I scored ${finalScore} points in Suzuki Hana Roulette! 🎰✨\n\n#鈴木羽那ルーレット\nPlay here: ${GAME_URL}`;
+                const modeTag = playedHighSpeed ? ' [⚡超高速モード]' : '';
+                return `「鈴木羽那ルーレット」で ${finalScore} 点を獲得したよ！${modeTag}🎰✨\n\n#鈴木羽那ルーレット\n遊んでみる 👉 ${GAME_URL}`;
+            } else {
+                const modeTag = playedHighSpeed ? ' [⚡Turbo Mode]' : '';
+                return `I scored ${finalScore} points in Suzuki Hana Roulette!${modeTag} 🎰✨\n\n#鈴木羽那ルーレット\nPlay here: ${GAME_URL}`;
             }
         }
 
