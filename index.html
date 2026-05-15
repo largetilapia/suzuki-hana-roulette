@@ -279,9 +279,36 @@
             text-align: center;
         }
 
-        #lang-toggle {
+        #lang-info-row {
             margin-top: 60px;
             display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #lang-toggle {
+            display: flex;
+        }
+
+        #btn-info {
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: bold;
+            padding: 4px 10px;
+            border: 2px solid black;
+            background-color: #FFFACD;
+            cursor: pointer;
+            box-shadow: 2px 2px 0px black;
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+
+        #btn-info:hover {
+            background-color: #ffe9a0;
+        }
+
+        #btn-info:active {
+            transform: translate(1px, 1px);
+            box-shadow: 1px 1px 0px black;
         }
 
         .lang-btn {
@@ -377,6 +404,63 @@
             line-height: 2;
             font-size: 10px;
         }
+
+        #info-modal {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        #info-modal-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        #info-modal-box {
+            position: relative;
+            background: white;
+            border: 4px solid black;
+            box-shadow: 6px 6px 0px black;
+            padding: 24px 28px;
+            max-width: 530px;
+            width: 70%;
+            z-index: 1;
+            text-align: center;
+        }
+
+        #info-modal-title {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 14px;
+        }
+
+        #info-modal-body {
+            font-size: 15px;
+            line-height: 1.8;
+            white-space: pre-line;
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        #btn-info-close {
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: bold;
+            padding: 6px 20px;
+            border: 2px solid black;
+            background-color: #FFFACD;
+            cursor: pointer;
+            box-shadow: 2px 2px 0px black;
+        }
+
+        #btn-info-close:active {
+            transform: translate(1px, 1px);
+            box-shadow: 1px 1px 0px black;
+        }
     </style>
 </head>
 
@@ -430,9 +514,12 @@
         <button id="btn-play-again">✨ PLAY AGAIN</button>
     </div>
 
-    <div id="lang-toggle">
-        <button class="lang-btn" id="btn-lang-en">ENGLISH</button>
-        <button class="lang-btn" id="btn-lang-ja">日本語</button>
+    <div id="lang-info-row">
+        <div id="lang-toggle">
+            <button class="lang-btn" id="btn-lang-en">ENGLISH</button>
+            <button class="lang-btn" id="btn-lang-ja">日本語</button>
+        </div>
+        <button id="btn-info">❓</button>
     </div>
 
     <div id="credits">
@@ -444,8 +531,10 @@
         <details>
             <summary id="credit-artwork">Artwork sourced from</summary>
             <ul>
-                <li><a href="https://shinycolors.idolmaster-official.jp/idol/cometik/hana/" target="_blank">Shiny Colors Official (鈴木羽那)</a></li>
-                <li><a href="https://shop.asobistore.jp/products/detail/219605-5_sc-c051-00-00" target="_blank">鈴木羽那 えび</a></li>
+                <li><a href="https://shinycolors.idolmaster-official.jp/idol/cometik/hana/" target="_blank">Shiny Colors
+                        Official (鈴木羽那)</a></li>
+                <li><a href="https://shop.asobistore.jp/products/detail/219605-5_sc-c051-00-00" target="_blank">鈴木羽那
+                        えび</a></li>
                 <li><a href="https://furyu-hm.com/products/fnx-5iprdxgv" target="_blank">鈴木羽那 もちWhat！</a></li>
                 <li><a href="https://www.detectiveconanworld.com/wiki/Sonoko_Suzuki" target="_blank">Detective Conan
                         World (鈴木)</a></li>
@@ -463,6 +552,15 @@
                         href="https://bsp-prize.jp/item/2735704/" target="_blank">ナー</a> → 羽那</li>
             </ul>
         </details>
+    </div>
+
+    <div id="info-modal" style="display:none;">
+        <div id="info-modal-overlay"></div>
+        <div id="info-modal-box">
+            <div id="info-modal-title"></div>
+            <div id="info-modal-body"></div>
+            <button id="btn-info-close"></button>
+        </div>
     </div>
 
     <script>
@@ -504,6 +602,9 @@
                 creditConcept: 'Concept & game design by ',
                 creditProgramming: 'Programming by ',
                 creditArtwork: 'Artwork sourced from',
+                infoTitle: 'How to Play',
+                infoBody: 'Match as many Suzuki Hanas as you can within the time limit!\n\nDifferent combinations give different results — so try to find them all!\n\nPress SPIN to start the reels, then stop each one independently to aim for the best combo.',
+                infoClose: '✕ Close',
             },
             ja: {
                 h1: '鈴木羽那ルーレット',
@@ -524,14 +625,14 @@
                 msgExpensiveFlower: '高い花ですね！＋70！',
                 msgSonokoHanaFan: '鈴木園子は鈴木羽那推し？！＋60！',
                 msgHanaKotoneFan: '鈴木羽那は藤田ことね推し！＋60！',
-                msgTechnicallyCorrect: '全部は確かに鈴木羽那ですけど... ＋50！',
+                msgTechnicallyCorrect: '確かに両方とも鈴木羽那ですけど... ＋50！',
                 msgFloweringSuzuki: '花咲く鈴木！＋40！',
                 msgHardworkingKotone: 'ことぬい働くぞ！＋40！',
                 msgCosplay: 'コスプレ？ +30!',
                 msgKoiKoi: 'こいこいじゃない！＋30！',
                 msgFishSmell: '魚のにおい...＋20！',
-                msgTreeTree: 'だぶるはじゃなくて、だぶる木？ ＋20！',
-                msgPartial: '鈴木羽那の片方...＋10！',
+                msgTreeTree: 'だぶるはじゃなくて、だぶるき？ ＋20！',
+                msgPartial: '片方だけ鈴木羽那...＋10！',
                 msgFlowering: '花が咲く...?＋10！',
                 msgWeird: '変な組み合わせ ＋1',
                 scoreCopy: '📋 スコアをコピー',
@@ -541,6 +642,9 @@
                 creditConcept: 'コンセプト＆ゲームデザイン：',
                 creditProgramming: 'プログラミング：',
                 creditArtwork: 'アートの出典',
+                infoTitle: '遊び方',
+                infoBody: '制限時間内にできるだけ多くの鈴木羽那を揃えよう！\n\n上下の組み合わせによって結果とスコアが変わるので、全部見つけてみよう！\n\nスピンを押してスタート。リールを一つずつ止めて、ベストコンボを狙おう！',
+                infoClose: '✕ 閉じる',
             }
         };
 
@@ -573,6 +677,10 @@
                 : t[msgState.key];
             document.getElementById('message').innerText = msg;
 
+            document.getElementById('info-modal-title').innerText = t.infoTitle;
+            document.getElementById('info-modal-body').innerText = t.infoBody;
+            document.getElementById('btn-info-close').innerText = t.infoClose;
+
             document.getElementById('btn-lang-en').classList.toggle('active', currentLang === 'en');
             document.getElementById('btn-lang-ja').classList.toggle('active', currentLang === 'ja');
 
@@ -585,6 +693,16 @@
 
         document.getElementById('btn-lang-en').addEventListener('click', () => { currentLang = 'en'; applyLanguage(); });
         document.getElementById('btn-lang-ja').addEventListener('click', () => { currentLang = 'ja'; applyLanguage(); });
+
+        document.getElementById('btn-info').addEventListener('click', () => {
+            document.getElementById('info-modal').style.display = 'flex';
+        });
+        document.getElementById('btn-info-close').addEventListener('click', () => {
+            document.getElementById('info-modal').style.display = 'none';
+        });
+        document.getElementById('info-modal-overlay').addEventListener('click', () => {
+            document.getElementById('info-modal').style.display = 'none';
+        });
 
         // --- GAME DATA ---
         const topItems = [
@@ -608,7 +726,7 @@
             { id: 'ebi', image: 'icons/hanaebi.jpg' },
         ];
 
-        const DEFAULT_SPEED = 4.0;
+        const DEFAULT_SPEED = 3.0;
         const ITEM_WIDTH = 150;
         const DEFAULT_TIME = 30;
 
@@ -643,7 +761,7 @@
             lastTime = currentTime;
             const deltaTimeMultiplier = deltaTime / 8.33; // Normalize to ~120fps
 
-            score_speed_multiplier = Math.sqrt(score) * 0.2;
+            score_speed_multiplier = Math.sqrt(score) * 0.1;
             if (topReel.spinning) {
                 topReel.x -= (topReel.speed + score_speed_multiplier) * deltaTimeMultiplier;
                 if (Math.abs(topReel.x) >= ITEM_WIDTH * topItems.length) topReel.x = 0;
@@ -838,7 +956,7 @@
         document.getElementById('btn-stop-top').addEventListener('click', (e) => {
             topReel.spinning = false;
             e.target.disabled = true;
-            bottomReel.speed = (bottomReel.speed) * 1.2 + Math.random() * 3;
+            bottomReel.speed = (bottomReel.speed) * 1.2 + Math.random() * 2;
             snapReelToCenter(topReel);
             checkResult();
         });
