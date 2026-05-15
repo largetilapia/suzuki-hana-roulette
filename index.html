@@ -8,20 +8,20 @@
     <!-- Primary Meta Tags -->
     <title>鈴木羽那ルーレット — Suzuki Hana Roulette</title>
     <meta name="title" content="鈴木羽那ルーレット — Suzuki Hana Roulette">
-    <meta name="description" content="すずきとはなを揃えて高得点を目指そう！20秒間の爆速パズルルーレット。">
+    <meta name="description" content="すずきとはなを揃えて高得点を目指そう！">
 
     <!-- Open Graph / Facebook / Discord -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://largetilapia.github.io/suzuki-hana-roulette">
     <meta property="og:title" content="鈴木羽那ルーレット">
-    <meta property="og:description" content="すずきとはなを揃えて高得点を目指そう！20秒間の爆速パズルルーレット。">
+    <meta property="og:description" content="すずきとはなを揃えて高得点を目指そう！">
     <meta property="og:image" content="https://largetilapia.github.io/suzuki-hana-roulette/preview.jpg">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://largetilapia.github.io/suzuki-hana-roulette">
     <meta property="twitter:title" content="鈴木羽那ルーレット">
-    <meta property="twitter:description" content="すずきとはなを揃えて高得点を目指そう！20秒間の爆速パズルルーレット。">
+    <meta property="twitter:description" content="すずきとはなを揃えて高得点を目指そう！">
     <meta property="twitter:image" content="https://largetilapia.github.io/suzuki-hana-roulette/preview.jpg">
 
     <title>鈴木羽那ルーレット</title>
@@ -444,19 +444,23 @@
         <details>
             <summary id="credit-artwork">Artwork sourced from</summary>
             <ul>
-                <li><a href="https://project-imas.wiki/Hana_Suzuki" target="_blank">iM@S Wiki</a></li>
+                <li><a href="https://shinycolors.idolmaster-official.jp/idol/cometik/hana/" target="_blank">Shiny Colors Official (鈴木羽那)</a></li>
+                <li><a href="https://shop.asobistore.jp/products/detail/219605-5_sc-c051-00-00" target="_blank">鈴木羽那 えび</a></li>
+                <li><a href="https://furyu-hm.com/products/fnx-5iprdxgv" target="_blank">鈴木羽那 もちWhat！</a></li>
                 <li><a href="https://www.detectiveconanworld.com/wiki/Sonoko_Suzuki" target="_blank">Detective Conan
-                        World</a></li>
-                <li><a href="https://zh.wikipedia.org/zh-tw/%E5%A4%A7%E5%8F%A3%E9%BB%91%E9%B1%B8" target="_blank">Fish
+                        World (鈴木)</a></li>
+                <li><a href="https://ja.wikipedia.org/wiki/%E3%82%B9%E3%82%BA%E3%82%AD_(%E9%AD%9A)" target="_blank">Fish
                         (鈴木 → 鱸)</a></li>
                 <li><a href="https://www.suzuki.co.jp/car/carry_customized/" target="_blank">スズキ</a></li>
                 <li><a href="https://www.freevector.com/free-cartoon-tree-vector-19274" target="_blank">Bell tree
-                        (鈴木)</a></li>
+                        (鈴 + 木)</a></li>
                 <li><a href="https://www.vecteezy.com/vector-art/9361806-human-nose-flat-clip-art-illustration-isolated-icon"
                         target="_blank">Nose (鼻 → 羽那)</a></li>
                 <li><a href="https://www.istockphoto.com/vector/home-flower-in-pot-vector-design-illustration-isolated-on-white-background-gm1154066666-313662878"
-                        target="_blank">Flower pot</a></li>
+                        target="_blank">Flower pot (花)</a></li>
                 <li><a href="https://en.wikipedia.org/wiki/Hanafuda" target="_blank">Hanafuda (花札 → 羽那)</a></li>
+                <li><a href="https://bsp-prize.jp/item/2735704/" target="_blank">Leaf (葉)</a> + <a
+                        href="https://bsp-prize.jp/item/2735704/" target="_blank">ナー</a> → 羽那</li>
             </ul>
         </details>
     </div>
@@ -476,11 +480,22 @@
                 msgStart: 'Press SPIN to start!',
                 msgSpinning: 'Spinning...',
                 msgTimeUp: (s) => `TIME'S UP!\nFinal Score: ${s}`,
-                msgPerfect: 'It\'s 鈴木羽那! +100!',
-                msgFloweringSuzuki: 'Flowering 鈴木! +50!',
-                msgPerson: 'Cosplay? +30!',
-                msgPartial: 'Partial 鈴木羽那... +20!',
-                msgFlowering: 'Flowering...? +20!',
+                msgPerfectCasual: 'It\'s Suzuki Hana! +100!',
+                msgPerfectLive: 'It\'s Suzuki hana (CoMETIK ver)! +100!',
+                msgAlmostPerfect: 'It\'s wrong outfit Suzuki Hana! +90!',
+                msgSuzukiHanaOshi: 'You must really like Suzuki Hana! +80!',
+                msgExpensiveFlower: 'That\'s one expensive flower! +70!',
+                msgSonokoHanaFan: 'Suzuki Sonoko is a fan of Suzuki Hana?! +60!',
+                msgHanaKotoneFan: 'Suzuki Hana is a fan of Fujita Kotone! +60!',
+                msgTechnicallyCorrect: 'Technically all of these are Suzuki Hana... +50!',
+                msgFloweringSuzuki: 'Flowering Suzuki (Hana)! +40!',
+                msgHardworkingKotone: 'Hardworking Kotonui! +40!',
+                msgCosplay: 'Cosplay? +30!',
+                msgKoiKoi: 'This isn\'t Koi-Koi! +30!',
+                msgFishSmell: 'Smells fishy... +20!',
+                msgTreeTree: 'DoubleTree (by Hana) +20!',
+                msgPartial: 'Partial Suzuki Hana... +10!',
+                msgFlowering: 'Flowering...? +10!',
                 msgWeird: 'Weird combo +1',
                 scoreCopy: '📋 Copy Score',
                 scoreShareTwitter: '🐦 Share on Twitter',
@@ -502,11 +517,22 @@
                 msgStart: 'スピンを押してスタート！',
                 msgSpinning: 'スピン中...',
                 msgTimeUp: (s) => `タイムアップ！\n最終スコア：${s}`,
-                msgPerfect: '鈴木羽那です！＋100！',
-                msgFloweringSuzuki: '花咲く鈴木！＋50！',
-                msgPerson: 'コスプレ？ +30!',
-                msgPartial: '鈴木羽那の片方...＋20！',
-                msgFlowering: '花が咲く...?＋20！',
+                msgPerfectCasual: '鈴木羽那です！＋100！',
+                msgPerfectLive: '鈴木羽那（CoMETIK ver）です！＋100！',
+                msgAlmostPerfect: '衣装違い鈴木羽那です！＋90！',
+                msgSuzukiHanaOshi: '鈴木羽那推しですね！＋80！',
+                msgExpensiveFlower: '高い花ですね！＋70！',
+                msgSonokoHanaFan: '鈴木園子は鈴木羽那推し？！＋60！',
+                msgHanaKotoneFan: '鈴木羽那は藤田ことね推し！＋60！',
+                msgTechnicallyCorrect: '全部は確かに鈴木羽那ですけど... ＋50！',
+                msgFloweringSuzuki: '花咲く鈴木！＋40！',
+                msgHardworkingKotone: 'ことぬい働くぞ！＋40！',
+                msgCosplay: 'コスプレ？ +30!',
+                msgKoiKoi: 'こいこいじゃない！＋30！',
+                msgFishSmell: '魚のにおい...＋20！',
+                msgTreeTree: 'だぶるはじゃなくて、だぶる木？ ＋20！',
+                msgPartial: '鈴木羽那の片方...＋10！',
+                msgFlowering: '花が咲く...?＋10！',
                 msgWeird: '変な組み合わせ ＋1',
                 scoreCopy: '📋 スコアをコピー',
                 scoreShareTwitter: '🐦 Twitterでシェア',
@@ -563,27 +589,34 @@
         // --- GAME DATA ---
         const topItems = [
             { id: 'fish', image: 'icons/fish-1.jpg' },
-            { id: 'girl', image: 'icons/suzuki-hana-head.jpg' },
+            { id: 'head_casual', image: 'icons/suzuki-hana-head.jpg' },
             { id: 'truck', image: 'icons/suzuki-truck.jpg' },
             { id: 'belltree', image: 'icons/bell-tree.jpg' },
-            { id: 'sonoko', image: 'icons/suzuki-sonoko.jpg' }
+            { id: 'sonoko', image: 'icons/suzuki-sonoko.jpg' },
+            { id: 'head_live', image: "icons/suzuki-hana-head-2.jpg" },
+            { id: 'mochi', image: "icons/mochiwhathana.jpg" }
+
         ];
 
         const bottomItems = [
             { id: 'nose', image: 'icons/nose.jpg' },
             { id: 'plant', image: 'icons/flower-pot-vector.jpg' },
-            { id: 'dress', image: 'icons/suzuki-hana-body.jpg' },
-            { id: 'hanafuda', image: 'icons/hanafuda.jpg' }
+            { id: 'body_casual', image: 'icons/suzuki-hana-body.jpg' },
+            { id: 'hanafuda', image: 'icons/hanafuda.jpg' },
+            { id: 'kotonui', image: 'icons/kotonuileaf.jpg' },
+            { id: 'body_live', image: 'icons/suzuki-hana-body-2.jpg' },
+            { id: 'ebi', image: 'icons/hanaebi.jpg' },
         ];
 
         const DEFAULT_SPEED = 4.0;
         const ITEM_WIDTH = 150;
-        const DEFAULT_TIME = 20;
+        const DEFAULT_TIME = 30;
 
         let score = 0;
         let timeLeft = DEFAULT_TIME;
         let gameActive = false;
         let timerInterval;
+        let lastTime = performance.now();
         document.getElementById('time-display').innerText = timeLeft;
 
         // Reel State
@@ -598,20 +631,27 @@
             reel.element.style.width = `${displayItems.length * ITEM_WIDTH}px`;
         }
 
+        shuffleArray(topItems);
+        shuffleArray(bottomItems);
         populateTrack(topReel, topItems);
         populateTrack(bottomReel, bottomItems);
 
         // --- ANIMATION LOOP ---
         function animate() {
-            score_speed_multiplier = Math.sqrt(score) * 0.3;
+            currentTime = performance.now()
+            const deltaTime = currentTime - lastTime;
+            lastTime = currentTime;
+            const deltaTimeMultiplier = deltaTime / 8.33; // Normalize to ~120fps
+
+            score_speed_multiplier = Math.sqrt(score) * 0.2;
             if (topReel.spinning) {
-                topReel.x -= topReel.speed + score_speed_multiplier;
+                topReel.x -= (topReel.speed + score_speed_multiplier) * deltaTimeMultiplier;
                 if (Math.abs(topReel.x) >= ITEM_WIDTH * topItems.length) topReel.x = 0;
                 topReel.element.style.transform = `translateX(${topReel.x}px)`;
             }
 
             if (bottomReel.spinning) {
-                bottomReel.x += bottomReel.speed + score_speed_multiplier;
+                bottomReel.x += (bottomReel.speed + score_speed_multiplier) * deltaTimeMultiplier;
                 if (bottomReel.x >= 0) {
                     bottomReel.x = -(ITEM_WIDTH * bottomItems.length);
                 }
@@ -685,16 +725,49 @@
 
             let points = 0;
 
-            if (topResult === 'girl' && bottomResult === 'dress') {
-                msgState = { key: 'msgPerfect' };
+            if (topResult === 'head_casual' && bottomResult === 'body_casual') {
+                msgState = { key: 'msgPerfectCasual' };
                 points = 100;
-            } else if (topResult === 'girl' && bottomResult === 'plant') {
-                msgState = { key: 'msgFloweringSuzuki' };
+            } else if (topResult === 'head_live' && bottomResult === 'body_live') {
+                msgState = { key: 'msgPerfectLive' };
+                points = 100;
+            } else if (topResult === 'head_live' && bottomResult === 'body_casual' || topResult === 'head_casual' && bottomResult === 'body_live') {
+                msgState = { key: 'msgAlmostPerfect' };
+                points = 90;
+            } else if (topResult === 'mochi' && bottomResult === 'ebi') {
+                msgState = { key: 'msgSuzukiHanaOshi' };
+                points = 80;
+            } else if (topResult === 'mochi' && bottomResult === 'plant') {
+                msgState = { key: 'msgExpensiveFlower' };
+                points = 70;
+            } else if (topResult === 'sonoko' && bottomResult === 'ebi') {
+                msgState = { key: 'msgSonokoHanaFan' };
+                points = 60;
+            } else if ((topResult === 'head_casual' || topResult === 'head_live') && bottomResult === 'kotonui') {
+                msgState = { key: 'msgHanaKotoneFan' };
+                points = 60;
+            } else if ((topResult === 'head_casual' || topResult === 'head_live' || topResult === 'mochi') && (bottomResult === 'body_casual' || bottomResult === 'body_live' || bottomResult === 'ebi')) {
+                msgState = { key: 'msgTechnicallyCorrect' };
                 points = 50;
-            } else if (topResult === 'sonoko' && bottomResult === 'dress') {
-                msgState = { key: 'msgPerson' };
+            } else if (topResult === 'head_casual' && bottomResult === 'plant' || topResult === 'head_live' && bottomResult === 'plant') {
+                msgState = { key: 'msgFloweringSuzuki' };
+                points = 40;
+            } else if (topResult === 'truck' && bottomResult === 'kotonui') {
+                msgState = { key: 'msgHardworkingKotone' };
+                points = 40;
+            } else if (topResult === 'sonoko' && (bottomResult === 'body_casual' || bottomResult === 'body_live')) {
+                msgState = { key: 'msgCosplay' };
                 points = 30;
-            } else if (topResult === 'girl' || bottomResult === 'dress') {
+            } else if (topResult === 'fish' && bottomResult === 'hanafuda') {
+                msgState = { key: 'msgKoiKoi' };
+                points = 30;
+            } else if (topResult === 'fish' && bottomResult === 'nose') {
+                msgState = { key: 'msgFishSmell' };
+                points = 20;
+            } else if (topResult === 'belltree' && bottomResult === 'plant') {
+                msgState = { key: 'msgTreeTree' };
+                points = 20;
+            } else if (topResult === 'head_casual' || bottomResult === 'body_casual' || topResult === 'head_live' || bottomResult === 'body_live') {
                 msgState = { key: 'msgPartial' };
                 points = 10;
             } else if (bottomResult === 'plant') {
